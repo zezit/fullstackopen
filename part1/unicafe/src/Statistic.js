@@ -1,11 +1,13 @@
 const StatisticLine = ({ text, value }) => {
   return (
-    <tr>
-      <th align="left" style={{ "padding-right": "40px" }}>
-        {text}
-      </th>
-      <th align="right"> {value}</th>
-    </tr>
+    <tbody>
+      <tr>
+        <th align="left" style={{ paddingRight: "40px" }}>
+          {text}
+        </th>
+        <th align="right"> {value}</th>
+      </tr>
+    </tbody>
   );
 };
 
