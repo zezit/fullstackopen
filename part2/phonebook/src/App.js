@@ -1,6 +1,35 @@
 import { useState, useEffect } from "react";
 import Persons from "./Persons";
 
+const Filter = ({ foundList, setSearchName }) => {
+  return (
+    <form onChange={({ target }) => setSearchName(target.value)}>
+      <div>
+        filter shown with <input />
+      </div>
+      <Persons persons={foundList} />
+    </form>
+  );
+};
+
+const PersonForm = ({ addNewPerson }) => {
+  return (
+    <form onSubmit={addNewPerson}>
+      <div>
+        name: <input />
+      </div>
+
+      <div>
+        number: <input />
+      </div>
+
+      <div>
+        <button type="submit">add</button>
+      </div>
+    </form>
+  );
+};
+
 const App = () => {
   const [persons, setPersons] = useState([
     { id: 1, name: "Arto Hellas", number: "040-1234567" },
@@ -78,27 +107,10 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onChange={({ target }) => setSearchName(target.value)}>
-        <div>
-          filter shown with <input />
-        </div>
-        <Persons persons={foundList} />
-      </form>
+      <Filter foundList={foundList} setSearchName={setSearchName} />
 
       <h2>add a new</h2>
-      <form onSubmit={addNewPerson}>
-        <div>
-          name: <input />
-        </div>
-
-        <div>
-          number: <input />
-        </div>
-
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm addNewPerson={addNewPerson} />
 
       <h2>Numbers</h2>
       <Persons persons={persons} />
