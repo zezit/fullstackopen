@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-
 import axios from "axios";
 
 const App = () => {
   const [countries, setCountries] = useState([])
   const [foundCountries, setFoundCountries] = useState([])
   const [nameSearch, setNameSearch] = useState("")
+  const [weather, setWeather] = useState({})
 
   useEffect(() => {
     axios.get("https://restcountries.com/v3.1/all")
@@ -14,9 +14,11 @@ const App = () => {
       })
   }, []);
 
+
   useEffect(() => {
     searchCountry();
   }, [nameSearch]);
+
 
   const searchCountry = () => {
     let foundCountries = [];
@@ -56,6 +58,12 @@ const App = () => {
     if (foundCountries.length === 1) {
       let showCountry = foundCountries[0]
 
+      axios.get(`${process.env.REACT_APP_API_LINK}&q=${showCountry.capital}&aqi=yes&key=${process.env.REACT_APP_API_KEY}`)
+      .then((response) => {
+        console.log("weather", response.data.current)
+        setWeather(response.data)
+      })
+
       const languages = () => {
         let langs = []
 
@@ -70,6 +78,11 @@ const App = () => {
         )
       }
 
+      console.log("W:", weather)
+      console.log("Temp:", weather.temp_c)
+      console.log("Icon:", weather.condition.icon)
+      console.log("Wind:", weather.wind_kph)
+
       return (
         <div>
           <h1>{showCountry.name.common} - {showCountry.name.official}</h1>
@@ -79,7 +92,14 @@ const App = () => {
           <h3>Languages:</h3>
 
           {languages()}
-          <div><img src={showCountry.flags.png} alt={`${showCountry.name.official}_flag`} /></div>
+          <div><img src={showCountry.flags.png} alt={`${showCountry.name.common}_flag`} /></div>
+
+          <div>
+            <h1>Weather in {showCountry.name.common}</h1>
+            {/* <p>Temperature: {weatherAux[0].temp_c} °C</p> */}
+            {/* <img src={weatherAux[0].condition.icon} /> */}
+            {/* <p>Wind: {weatherAux[0].wind_kph} km/h</p> */}
+          </div>
         </div>
       )
     }
