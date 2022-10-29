@@ -32,7 +32,7 @@ const App = () => {
       });
       setPersons(personsAux);
     } else {
-      alert("Name already exists!");
+      alert(`${nameAux} is already added to phonebook!`);
     }
   };
 
