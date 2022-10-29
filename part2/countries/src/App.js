@@ -45,6 +45,13 @@ const App = () => {
     }
   }
 
+  const renderSpecific = (index) => {
+    let auxFond = []
+    auxFond.push(foundCountries[index])
+
+    setFoundCountries(auxFond)
+  }
+
   const renderName = () => {
     if (foundCountries.length === 1) {
       let showCountry = foundCountries[0]
@@ -76,9 +83,21 @@ const App = () => {
         </div>
       )
     }
+
     else if (foundCountries.length <= 10) {
-      return (foundCountries.map((nameCountry, i) => <p key={i}>{nameCountry.name.official}</p>))
+      return (foundCountries.map((nameCountry, i) =>
+        <div key={i}>
+          <p>
+            <span>{nameCountry.name.official}</span>
+            <button
+              style={{ margin: "0 20px" }}
+              onClick={() => renderSpecific(i)}
+            >show</button>
+          </p>
+        </div>
+      ))
     }
+
     else {
       return (<p>Too many matches, specify another filter</p>)
     }
