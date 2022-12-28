@@ -65,32 +65,46 @@ app.delete("/api/persons/:id", (request, response) => {
   response.status(204).end();
 });
 
-// const generateId = () => {
-//   const maxId = people.length > 0 ? Math.max(...people.map((n) => n.id)) : 0;
-//   return maxId + 1;
-// };
+let generateId = () => {
+  let genId = null;
+
+  do {
+    genId = Math.random() * (2e32 - 0) + 0;
+  } while (people.findIndex((p) => p.id == genId) > 0);
+
+  return genId;
+};
 
 app.post("/api/persons", (request, response) => {
   const body = request.body;
 
-  if (!body.content) {
+  if (!body.name) {
     return response.status(400).json({
-      error: "content missing",
+      error: "name missing",
+    });
+  }
+  if (!body.number) {
+    return response.status(400).json({
+      error: "number missing",
+    });
+  }
+  if (people.findIndex((p) => p.name == body.name) >= 0) {
+    return response.status(400).json({
+      error: "name already exists",
     });
   }
 
   const person = {
-    content: body.content,
-    important: body.important || false,
-    date: new Date(),
     id: generateId(),
+    name: body.name,
+    number: body.number,
   };
 
-  notes = notes.concat(person);
+  people = people.concat(person);
 
   response.json(person);
 
-  console.log(person);
+  // console.log(people);
 });
 
 const PORT = 3001;
